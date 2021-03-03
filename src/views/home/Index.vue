@@ -11,7 +11,7 @@ import Recommend from '@/views/home/Recommend'
 import Near from '@/views/home/Near'
 import Menu from '@/views/home/Menu'
 export default {
-  name: 'Home',
+  name: 'Index',
   components: { Recommend, Near, Menu }
 }
 </script>
