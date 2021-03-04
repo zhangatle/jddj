@@ -2,30 +2,65 @@
   <div class="user">
     <img src="../../assets/user.svg" alt="">
     <div class="input">
-      <input type="text" placeholder="请输入手机号">
+      <input type="text" v-model="username" placeholder="请输入手机号">
     </div>
     <div class="input">
-      <input type="password" placeholder="请输入密码">
+      <input type="password" v-model="password" placeholder="请输入密码">
     </div>
     <div class="button" @click="handleLogin">登录</div>
     <div class="link">
-      <span>立即注册</span> |
+      <span @click="handleRegister">立即注册</span> |
       <span>忘记密码</span>
     </div>
+    <Toast v-if="show" :message="toastMessage"/>
   </div>
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
+import { reactive, toRefs } from 'vue'
+import { post } from '@/utils/request'
+import Toast, { useToastEffect } from '@/components/Toast'
+
+const useRegisterEffect = () => {
+  const router = useRouter()
+  const handleRegister = () => {
+    router.push({ name: 'Register' })
+  }
+  return { handleRegister }
+}
+
+const useLoginEffect = (showToast) => {
+  const router = useRouter()
+  const data = reactive({ username: '', password: '' })
+  const handleLogin = async () => {
+    try {
+      const result = await post('/apis/user/login', {
+        username: data.username,
+        password: data.password
+      })
+      if (result?.errno === 0) {
+        localStorage.isLogin = true
+        await router.push({ name: 'Home' })
+      } else {
+        showToast('登录失败')
+      }
+    } catch (e) {
+      showToast('登录失败')
+    }
+  }
+  const { username, password } = toRefs(data)
+  return { handleLogin, username, password }
+}
+
 export default {
   name: 'Index',
+  components: { Toast },
   setup () {
-    const router = useRouter()
-    const handleLogin = () => {
-      localStorage.isLogin = true
-      router.push({ name: 'Home' })
-    }
-    return { handleLogin }
+    const { show, toastMessage, showToast } = useToastEffect()
+    const { handleRegister } = useRegisterEffect()
+    const { handleLogin, username, password } = useLoginEffect(showToast)
+    return { handleLogin, handleRegister, username, password, show, toastMessage, showToast }
   }
 }
 </script>
