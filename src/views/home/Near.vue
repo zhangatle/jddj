@@ -13,16 +13,31 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { get } from '@/utils/request'
+
+const getNearListEffect = () => {
+  const nearList = ref([])
+  const getNearList = async () => {
+    try {
+      const result = await get('/api/shop/list')
+      if (result?.errno === 0 && result.data.length > 0) {
+        nearList.value = result.data
+      } else {
+        console.log('err')
+      }
+    } catch (e) {
+      console.log('err')
+    }
+  }
+  return { getNearList, nearList }
+}
+
 export default {
   name: 'Near',
   setup () {
-    const nearList = [
-      { img: 'http://www.dell-lee.com/imgs/vue3/near.png', title: '沃尔玛', tags: ['月售1万+', '起送￥0', '基础运费￥5'], notice: 'VIP尊享满89元减4元运费券（每月3张）' },
-      { img: 'http://www.dell-lee.com/imgs/vue3/near.png', title: '沃尔玛', tags: ['月售1万+', '起送￥0', '基础运费￥5'], notice: 'VIP尊享满89元减4元运费券（每月3张）' },
-      { img: 'http://www.dell-lee.com/imgs/vue3/near.png', title: '沃尔玛', tags: ['月售1万+', '起送￥0', '基础运费￥5'], notice: 'VIP尊享满89元减4元运费券（每月3张）' },
-      { img: 'http://www.dell-lee.com/imgs/vue3/near.png', title: '沃尔玛', tags: ['月售1万+', '起送￥0', '基础运费￥5'], notice: 'VIP尊享满89元减4元运费券（每月3张）' },
-      { img: 'http://www.dell-lee.com/imgs/vue3/near.png', title: '沃尔玛', tags: ['月售1万+', '起送￥0', '基础运费￥5'], notice: 'VIP尊享满89元减4元运费券（每月3张）' }
-    ]
+    const { nearList, getNearList } = getNearListEffect()
+    getNearList()
     return { nearList }
   }
 }

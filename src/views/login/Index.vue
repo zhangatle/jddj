@@ -35,7 +35,7 @@ const useLoginEffect = (showToast) => {
   const data = reactive({ username: '', password: '' })
   const handleLogin = async () => {
     try {
-      const result = await post('/apis/user/login', {
+      const result = await post('/api/user/login', {
         username: data.username,
         password: data.password
       })
