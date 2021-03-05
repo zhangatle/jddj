@@ -5,7 +5,7 @@
       <input type="text" v-model="username" placeholder="请输入手机号">
     </div>
     <div class="input">
-      <input type="password" v-model="password" placeholder="请输入密码">
+      <input type="password" v-model="password" autocomplete="new-password" placeholder="请输入密码">
     </div>
     <div class="button" @click="handleLogin">登录</div>
     <div class="link">

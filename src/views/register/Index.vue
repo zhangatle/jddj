@@ -5,10 +5,10 @@
       <input type="text" placeholder="请输入手机号">
     </div>
     <div class="input">
-      <input type="password" placeholder="请输入密码">
+      <input type="password" autocomplete="new-password" placeholder="请输入密码">
     </div>
     <div class="input">
-      <input type="password" placeholder="确认密码">
+      <input type="password" autocomplete="new-password" placeholder="确认密码">
     </div>
     <div class="button" @click="handleRegister">注册</div>
     <div class="link">
